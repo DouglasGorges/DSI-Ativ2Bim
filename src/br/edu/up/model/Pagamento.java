@@ -18,9 +18,17 @@ public class Pagamento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "pagamentos_sq")
+    @Column(name="id")
     private int id;
+
+    @OneToOne
+    @JoinColumn(name="idAluguel")
     private Aluguel aluguel;
+
+    @Column(name="dtVencimento")
     private Date dtVencimento;
+
+    @Column(name="dtPagamento")
     private Date dtPagamento;
 
     public Pagamento() {
@@ -58,5 +66,14 @@ public class Pagamento {
 
     public void setDtPagamento(Date dtPagamento) {
         this.dtPagamento = dtPagamento;
+    }
+
+    @Override
+    public String toString(){
+        return "id=" + id +
+                ", aluguel.usuario='" + getAluguel().getUsuario().getNome() + '\'' +
+                ", aluguel.veiculo='" + getAluguel().getVeiculo().getCodigo() + '\'' +
+                ", dtVencimento=" + getDtVencimento() +
+                ", dtPagamento=" + getDtPagamento();
     }
 }

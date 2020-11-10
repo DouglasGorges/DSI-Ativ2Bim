@@ -18,11 +18,24 @@ public class Aluguel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "alugueis_sq")
+    @Column(name="id")
     private int id;
+
+    @OneToOne
+    @JoinColumn(name="idUsuario")
     private Usuario usuario;
+
+    @OneToOne
+    @JoinColumn(name="idVeiculo")
     private Veiculo veiculo;
+
+    @Column(name="dtRetirada")
     private Date dtRetirada;
+
+    @Column(name="dtDevolucao")
     private Date dtDevolucao;
+
+    @Column(name="preco")
     private long preco;
 
     public Aluguel() {
@@ -78,5 +91,15 @@ public class Aluguel {
 
     public void setPreco(long preco) {
         this.preco = preco;
+    }
+
+    @Override
+    public String toString(){
+        return "id=" + id +
+                ", usuario='" + getUsuario().getNome() + '\'' +
+                ", veiculo='" + getVeiculo().getCodigo() + '\'' +
+                ", dtRetirada=" + getDtRetirada() +
+                ", dtDevolucao=" + getDtDevolucao() +
+                ", preco=" + getPreco();
     }
 }

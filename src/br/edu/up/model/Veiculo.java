@@ -17,9 +17,16 @@ public class Veiculo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "veiculos_sq")
+    @Column(name="id")
     private int id;
+
+    @Column(name="codigo")
     private long codigo;
+
+    @Column(name="cor")
     private String cor;
+
+    @Column(name="preco")
     private double preco;
 
     public Veiculo() {
@@ -57,5 +64,13 @@ public class Veiculo {
 
     public void setPreco(double preco) {
         this.preco = preco;
+    }
+
+    @Override
+    public String toString(){
+        return "id=" + id +
+                ", codigo=" + getCodigo() +
+                ", cor='" + getCor() + '\'' +
+                ", preco=" + getPreco();
     }
 }
