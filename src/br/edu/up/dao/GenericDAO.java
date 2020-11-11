@@ -16,7 +16,7 @@ public abstract class GenericDAO<T> implements DAO<T> {
         Type t = this.getClass().getGenericSuperclass();
         ParameterizedType pt = (ParameterizedType)t;
         this.persistedClass = (Class)pt.getActualTypeArguments()[0];
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("bikeRentManager");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("ativ2bim");
         this.entityManager = emf.createEntityManager();
     }
 

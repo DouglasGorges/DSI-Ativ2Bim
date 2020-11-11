@@ -28,7 +28,7 @@
             <property name="hibernate.connection.user" value=""/>
             <property name="hibernate.connection.autocommit" value="true"/>
             <property name="hibernate.connection.url"
-                      value="jdbc:sqlite:/Users/douglasgorges/Codes/Faculty/DSI/db_Ativ2Bim/ativ2bim.db"/>
+                      value="jdbc:sqlite:../../DSI/db_Ativ2Bim/ativ2bim.db"/>
             <property name="hibernate.flushMode" value="ALWAYS"/>
             <property name="hibernate.cache.use_second_level_cache" value="false"/>
             <property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider"/>
