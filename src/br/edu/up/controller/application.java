@@ -115,7 +115,16 @@ public class application {
     }
 
     private static void apagarUsuario() {
+        listarUsuario();
 
+        System.out.println("Digite o código do usuário que desejas apagar: ");
+        Scanner scanUsuario = new Scanner(System.in);
+        Integer codigoUsuario = scanUsuario.nextInt();
+
+        UsuarioDAO usuarioDao = new UsuarioDAO();
+        usuarioDao.apagar(codigoUsuario);
+
+        listarUsuario();
     }
 
     private static void abrirMenuVeiculos() {
