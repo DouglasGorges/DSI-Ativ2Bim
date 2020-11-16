@@ -9,22 +9,23 @@
         <class>br.edu.up.model.Veiculo</class>
         <class>br.edu.up.model.Aluguel</class>
         <class>br.edu.up.model.Pagamento</class>
+        jdbc:sqlite:/Users/douglasgorges/Codes/Faculty/DSI/db_Ativ2Bim/ativ2bim.db
         -->
         <properties>
-            <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="javax.persistence.jdbc.driver" value="org.sqlite.JDBC"/>
             <property name="javax.persistence.jdbc.url"
                       value="jdbc:sqlite:/Users/douglasgorges/Codes/Faculty/DSI/db_Ativ2Bim/ativ2bim.db"/>
             <property name="javax.persistence.schema-generation.database.action" value="create"/>
 
-            <property name="connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>
+            <!-- <property name="connection.driver_class" value="com.mysql.cj.jdbc.Driver"/> -->
 
             <property name="hibernate.hbm2ddl.auto" value="create"/>
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="false"/>
             <property name="hibernate.archive.autodetection" value="class"/>
             <!-- <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" /> -->
-            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
-            <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.SQLiteDialect"/>
+           <!-- <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/> -->
             <property name="hibernate.connection.user" value=""/>
             <property name="hibernate.connection.autocommit" value="true"/>
             <property name="hibernate.connection.url"

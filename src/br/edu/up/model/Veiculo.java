@@ -6,10 +6,10 @@ import javax.persistence.*;
 @Table(name = "veiculos")
 @TableGenerator(
         name = "veiculos_sq",
-        table = "sqlite_sequence",
+        table = "veiculos_sq",
         pkColumnName = "id",
         valueColumnName = "seq",
-        pkColumnValue = "veiculo",
+        pkColumnValue = "veiculo_id",
         initialValue = 1,
         allocationSize = 1
 )

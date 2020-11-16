@@ -7,7 +7,7 @@ import java.util.Date;
 @Table(name = "alugueis")
 @TableGenerator(
         name = "alugueis_sq",
-        table = "sqlite_sequence",
+        table = "alugueis_sq",
         pkColumnName = "id",
         valueColumnName = "seq",
         pkColumnValue = "aluguel",

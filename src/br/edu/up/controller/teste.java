@@ -11,7 +11,7 @@ public class teste {
     public static void main(String[] args) throws SQLException {
 
         UsuarioDAO uDao = new UsuarioDAO();
-        Usuario usuario = new Usuario("Douglas", "Gorges", new Date());
+        Usuario usuario = new Usuario("DouglasTESTE", "GorgesTESTE", new Date());
         uDao.salvar(usuario);
 
         List<Usuario> listaUsuarios = uDao.listar();
