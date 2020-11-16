@@ -4,6 +4,7 @@ import br.edu.up.dao.UsuarioDAO;
 import br.edu.up.model.Usuario;
 
 import java.sql.*;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -14,7 +15,7 @@ public class application {
 
     public static void main(String[] args) throws SQLException, ParseException {
 
-        1initMenu();
+        initMenu();
 
         /*
         UsuarioDAO uDao = new UsuarioDAO();
@@ -98,7 +99,19 @@ public class application {
     }
 
     private static void listarUsuario() {
+        UsuarioDAO usuarioDao = new UsuarioDAO();
+        List<Usuario> listaDeUsuarios = usuarioDao.listar();
 
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        System.out.println("ID\tNome\t\t\tData Nascimento:");
+        for (Usuario usuario : listaDeUsuarios) {
+            String dtNascFormatada = df.format(usuario.getDtNascimento());
+            System.out.println(
+                    usuario.getId() + "\t" +
+                            usuario.getNome() + " " +
+                            usuario.getSobrenome() + "\t" +
+                            dtNascFormatada);
+        }
     }
 
     private static void apagarUsuario() {
