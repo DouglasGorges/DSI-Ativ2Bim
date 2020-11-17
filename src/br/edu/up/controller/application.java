@@ -13,6 +13,8 @@ import java.util.Scanner;
 
 public class application {
 
+    private static String DATE_PATTERN = "dd/MM/yyyy";
+
     public static void main(String[] args) throws SQLException, ParseException {
 
         initMenu();
@@ -33,10 +35,9 @@ public class application {
         System.out.println("     Bem vindo ao Bike Rent");
         System.out.println("________________________________");
         System.out.println("Selecione um menu:");
-        System.out.println("|        1 - Usuários          |");
-        System.out.println("|        2 - Veículos          |");
-        System.out.println("|        3 - Alugueis          |");
-        System.out.println("|        4 - Pagamentos        |");
+        System.out.println("|        1 - Cadastro           |");
+        System.out.println("|        2 - Aluguel            |");
+        System.out.println("|        3 - Pagamento          |");
         System.out.println("________________________________");
         Scanner scanner = new Scanner(System.in);
         Integer nrMenu = scanner.nextInt();
@@ -44,10 +45,8 @@ public class application {
         if (nrMenu.equals(1)) {
             abrirMenuUsuarios();
         } else if (nrMenu.equals(2)) {
-            abrirMenuVeiculos();
-        } else if (nrMenu.equals(3)) {
             abrirMenuAlugueis();
-        } else if (nrMenu.equals(4)) {
+        } else if (nrMenu.equals(3)) {
             abrirMenuPagamentos();
         }
     }
@@ -55,10 +54,9 @@ public class application {
     private static void abrirMenuUsuarios() throws ParseException {
         System.out.println("________________________________");
         System.out.println("Selecione um submenu de Usuários:");
-        System.out.println("|        1 - Cadastrar          |");
-        System.out.println("|        2 - Editar             |");
-        System.out.println("|        3 - Listar             |");
-        System.out.println("|        4 - Apagar             |");
+        System.out.println("|        1 - Cadastre-se        |");
+        System.out.println("|        2 - Editar cadastro    |");
+        System.out.println("|        4 - Apagar cadastro    |");
         System.out.println("________________________________");
         Scanner scanner = new Scanner(System.in);
         Integer nrMenu = scanner.nextInt();
@@ -76,15 +74,15 @@ public class application {
 
     private static void cadastrarUsuario() throws ParseException {
         Scanner scanUsuario = new Scanner(System.in);
-        System.out.println("--Cadastrar Usuario--");
-        System.out.println("Digite o nome: ");
+        System.out.println("--Novo Cadastro de Usuário--");
+        System.out.println("Digite seu nome: ");
         String nomeUsuario = scanUsuario.next();
-        System.out.println("Digite o sobrenome: ");
+        System.out.println("Digite seu sobrenome: ");
         String sobrenomeUsuario = scanUsuario.next();
-        System.out.println("Digite a data de nascimento: (dd/MM/aaaa)");
+        System.out.println("Digite sua data de nascimento: (dd/MM/aaaa)");
         String strDtNascimentoUsuario = scanUsuario.next();
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_PATTERN);
         Date dtNascimentoUsuario = sdf.parse(strDtNascimentoUsuario);
 
         Usuario usuario = new Usuario(nomeUsuario, sobrenomeUsuario, dtNascimentoUsuario);
@@ -92,54 +90,64 @@ public class application {
         UsuarioDAO usuarioDao = new UsuarioDAO();
         usuarioDao.salvar(usuario);
 
+        System.out.println("Cadastro realizado com sucesso!");
+
     }
 
     private static void editarUsuario() throws ParseException {
         listarUsuario();
 
-        System.out.println("Digite o código do usuário que desejas editar: ");
+        System.out.println("Digite seus dados:");
         Scanner scanUsuario = new Scanner(System.in);
-        Integer codigoUsuario = scanUsuario.nextInt();
-
-        UsuarioDAO usuarioDao = new UsuarioDAO();
-        Usuario usuario = usuarioDao.buscarPorId(codigoUsuario);
-
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        String dtNascFormatada = df.format(usuario.getDtNascimento());
-
-        System.out.println("Dados anteriores: " +
-                usuario.getNome() + " " +
-                usuario.getSobrenome() + ", " +
-                dtNascFormatada);
-
-        System.out.println("Dados novos:");
-        System.out.println("Digite o nome: ");
+        System.out.println("Nome: ");
         String nomeUsuario = scanUsuario.next();
-        System.out.println("Digite o sobrenome: ");
+        System.out.println("Sobrenome: ");
         String sobrenomeUsuario = scanUsuario.next();
-        System.out.println("Digite a data de nascimento: (dd/MM/aaaa)");
+        System.out.println("Data de nascimento: (dd/MM/aaaa)");
         String strDtNascimentoUsuario = scanUsuario.next();
 
-        if(nomeUsuario != null && !nomeUsuario.isEmpty())
-            usuario.setNome(nomeUsuario);
-        if(sobrenomeUsuario != null && !sobrenomeUsuario.isEmpty())
-            usuario.setSobrenome(sobrenomeUsuario);
-        if(strDtNascimentoUsuario != null && !strDtNascimentoUsuario.isEmpty()){
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            Date dtNascimentoUsuario = sdf.parse(strDtNascimentoUsuario);
-            usuario.setDtNascimento(dtNascimentoUsuario);
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_PATTERN);
+        Date dtNascimentoUsuario = sdf.parse(strDtNascimentoUsuario);
+
+        Usuario usuario = new Usuario(nomeUsuario, sobrenomeUsuario, dtNascimentoUsuario);
+
+        UsuarioDAO usuarioDao = new UsuarioDAO();
+        Usuario usuarioEncontrado = usuarioDao.buscar(usuario);
+
+        DateFormat df = new SimpleDateFormat(DATE_PATTERN);
+        String dtNascFormatada = df.format(usuarioEncontrado.getDtNascimento());
+        System.out.println("Dados encontrados: " +
+                usuarioEncontrado.getNome() + " " +
+                usuarioEncontrado.getSobrenome() + ", " +
+                dtNascFormatada);
+
+        System.out.println("Dados os novos dados:");
+        System.out.println("Digite o nome: ");
+        String novoNomeUsuario = scanUsuario.next();
+        System.out.println("Digite o sobrenome: ");
+        String novoSobrenomeUsuario = scanUsuario.next();
+        System.out.println("Digite a data de nascimento: (dd/MM/aaaa)");
+        String strNovaDtNascimentoUsuario = scanUsuario.next();
+
+        if(novoNomeUsuario != null && !novoNomeUsuario.isEmpty())
+            usuarioEncontrado.setNome(novoNomeUsuario);
+        if(novoSobrenomeUsuario != null && !novoSobrenomeUsuario.isEmpty())
+            usuarioEncontrado.setSobrenome(novoSobrenomeUsuario);
+        if(strNovaDtNascimentoUsuario != null && !strNovaDtNascimentoUsuario.isEmpty()){
+            Date novaDtNascimentoUsuario = sdf.parse(strNovaDtNascimentoUsuario);
+            usuarioEncontrado.setDtNascimento(novaDtNascimentoUsuario);
         }
 
-        usuarioDao.atualizar(usuario);
+        usuarioDao.atualizar(usuarioEncontrado);
 
-        listarUsuario();
+        //listarUsuario();
     }
 
     private static void listarUsuario() {
         UsuarioDAO usuarioDao = new UsuarioDAO();
         List<Usuario> listaDeUsuarios = usuarioDao.listar();
 
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat df = new SimpleDateFormat(DATE_PATTERN);
         System.out.println("ID\tNome\t\t\tData Nascimento:");
         for (Usuario usuario : listaDeUsuarios) {
             String dtNascFormatada = df.format(usuario.getDtNascimento());
@@ -165,7 +173,25 @@ public class application {
     }
 
     private static void abrirMenuVeiculos() {
+        System.out.println("________________________________");
+        System.out.println("Selecione um submenu de Veículos:");
+        System.out.println("|        1 - Cadastrar          |");
+        System.out.println("|        2 - Editar             |");
+        System.out.println("|        3 - Listar             |");
+        System.out.println("|        4 - Apagar             |");
+        System.out.println("________________________________");
+        Scanner scanner = new Scanner(System.in);
+        Integer nrMenu = scanner.nextInt();
 
+        if (nrMenu.equals(1)) {
+            //cadastrarUsuario();
+        } else if (nrMenu.equals(2)) {
+            //editarUsuario();
+        } else if (nrMenu.equals(3)) {
+            listarUsuario();
+        } else if (nrMenu.equals(4)) {
+            apagarUsuario();
+        }
     }
 
     private static void abrirMenuAlugueis() {
