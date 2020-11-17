@@ -92,10 +92,12 @@ public class application {
 
         System.out.println("Cadastro realizado com sucesso!");
 
+        initMenu();
+
     }
 
-    private static void editarUsuario() throws ParseException {
-        listarUsuario();
+    private static Usuario buscarUsuario() throws ParseException {
+        //listarUsuario();
 
         System.out.println("Digite seus dados:");
         Scanner scanUsuario = new Scanner(System.in);
@@ -110,9 +112,14 @@ public class application {
         Date dtNascimentoUsuario = sdf.parse(strDtNascimentoUsuario);
 
         Usuario usuario = new Usuario(nomeUsuario, sobrenomeUsuario, dtNascimentoUsuario);
-
         UsuarioDAO usuarioDao = new UsuarioDAO();
-        Usuario usuarioEncontrado = usuarioDao.buscar(usuario);
+
+        return usuarioDao.buscar(usuario);
+    }
+
+    private static void editarUsuario() throws ParseException {
+
+        Usuario usuarioEncontrado = buscarUsuario();
 
         DateFormat df = new SimpleDateFormat(DATE_PATTERN);
         String dtNascFormatada = df.format(usuarioEncontrado.getDtNascimento());
@@ -123,6 +130,7 @@ public class application {
 
         System.out.println("Dados os novos dados:");
         System.out.println("Digite o nome: ");
+        Scanner scanUsuario = new Scanner(System.in);
         String novoNomeUsuario = scanUsuario.next();
         System.out.println("Digite o sobrenome: ");
         String novoSobrenomeUsuario = scanUsuario.next();
@@ -134,12 +142,17 @@ public class application {
         if(novoSobrenomeUsuario != null && !novoSobrenomeUsuario.isEmpty())
             usuarioEncontrado.setSobrenome(novoSobrenomeUsuario);
         if(strNovaDtNascimentoUsuario != null && !strNovaDtNascimentoUsuario.isEmpty()){
+            SimpleDateFormat sdf = new SimpleDateFormat(DATE_PATTERN);
             Date novaDtNascimentoUsuario = sdf.parse(strNovaDtNascimentoUsuario);
             usuarioEncontrado.setDtNascimento(novaDtNascimentoUsuario);
         }
 
+        UsuarioDAO usuarioDao = new UsuarioDAO();
         usuarioDao.atualizar(usuarioEncontrado);
 
+        System.out.println("Usuário editado com sucesso!");
+
+        initMenu();
         //listarUsuario();
     }
 
@@ -159,20 +172,20 @@ public class application {
         }
     }
 
-    private static void apagarUsuario() {
-        listarUsuario();
+    private static void apagarUsuario() throws ParseException {
+        //listarUsuario();
 
-        System.out.println("Digite o código do usuário que desejas apagar: ");
-        Scanner scanUsuario = new Scanner(System.in);
-        Integer codigoUsuario = scanUsuario.nextInt();
+        Usuario usuario = buscarUsuario();
 
         UsuarioDAO usuarioDao = new UsuarioDAO();
-        usuarioDao.apagar(codigoUsuario);
+        usuarioDao.apagar(usuario.getId());
 
-        listarUsuario();
+        System.out.println("Usuário apagado com sucesso!");
+        initMenu();
+        //listarUsuario();
     }
 
-    private static void abrirMenuVeiculos() {
+    private static void abrirMenuVeiculos() throws ParseException {
         System.out.println("________________________________");
         System.out.println("Selecione um submenu de Veículos:");
         System.out.println("|        1 - Cadastrar          |");
