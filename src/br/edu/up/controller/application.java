@@ -94,8 +94,45 @@ public class application {
 
     }
 
-    private static void editarUsuario() {
+    private static void editarUsuario() throws ParseException {
+        listarUsuario();
 
+        System.out.println("Digite o código do usuário que desejas editar: ");
+        Scanner scanUsuario = new Scanner(System.in);
+        Integer codigoUsuario = scanUsuario.nextInt();
+
+        UsuarioDAO usuarioDao = new UsuarioDAO();
+        Usuario usuario = usuarioDao.buscarPorId(codigoUsuario);
+
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        String dtNascFormatada = df.format(usuario.getDtNascimento());
+
+        System.out.println("Dados anteriores: " +
+                usuario.getNome() + " " +
+                usuario.getSobrenome() + ", " +
+                dtNascFormatada);
+
+        System.out.println("Dados novos:");
+        System.out.println("Digite o nome: ");
+        String nomeUsuario = scanUsuario.next();
+        System.out.println("Digite o sobrenome: ");
+        String sobrenomeUsuario = scanUsuario.next();
+        System.out.println("Digite a data de nascimento: (dd/MM/aaaa)");
+        String strDtNascimentoUsuario = scanUsuario.next();
+
+        if(nomeUsuario != null && !nomeUsuario.isEmpty())
+            usuario.setNome(nomeUsuario);
+        if(sobrenomeUsuario != null && !sobrenomeUsuario.isEmpty())
+            usuario.setSobrenome(sobrenomeUsuario);
+        if(strDtNascimentoUsuario != null && !strDtNascimentoUsuario.isEmpty()){
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            Date dtNascimentoUsuario = sdf.parse(strDtNascimentoUsuario);
+            usuario.setDtNascimento(dtNascimentoUsuario);
+        }
+
+        usuarioDao.atualizar(usuario);
+
+        listarUsuario();
     }
 
     private static void listarUsuario() {
