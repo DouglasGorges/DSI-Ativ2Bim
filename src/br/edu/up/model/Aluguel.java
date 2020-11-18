@@ -1,6 +1,7 @@
 package br.edu.up.model;
 
 import javax.persistence.*;
+import java.text.DecimalFormat;
 import java.util.Date;
 
 @Entity
@@ -92,8 +93,17 @@ public class Aluguel {
         this.dtDevolucao = dtDevolucao;
     }
 
-    public double getPreco() {
-        return preco;
+    public String getPreco() {
+        long now = new Date().getTime();
+        long retirada = this.dtRetirada.getTime();
+
+        long tempoAlugado = now - retirada;
+
+        DecimalFormat numberFormat = new DecimalFormat("0.00");
+
+        double resultado = (preco * tempoAlugado)/3600000;
+
+        return numberFormat.format(resultado);
     }
 
     public void setPreco(double preco) {

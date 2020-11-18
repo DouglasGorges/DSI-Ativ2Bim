@@ -1,11 +1,8 @@
 package br.edu.up.dao;
 
 import br.edu.up.model.Usuario;
-import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import java.util.List;
 
 public class UsuarioDAO extends GenericDAO<Usuario> {
     protected EntityManager entityManager;

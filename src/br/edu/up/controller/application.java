@@ -185,7 +185,7 @@ public class application {
         if (nrMenu.equals(1)) {
             iniciarAluguel();
         } else if (nrMenu.equals(2)) {
-            //consultarAluguel();
+            consultarAluguel();
         } else if (nrMenu.equals(3)) {
            //finalizarAluguel();
         }
@@ -226,6 +226,26 @@ public class application {
 
         System.out.println("Aluguel iniciado com sucesso! Boa viagem!");
 
+        initMenu();
+    }
+
+    private static void consultarAluguel() throws ParseException {
+        Usuario usuario = buscarUsuario();
+
+        AluguelDAO aluguelDAO = new AluguelDAO();
+        List<Aluguel> listaAlugueis = aluguelDAO.buscarAlugueisAtivos(usuario);
+
+        System.out.println("________________________________");
+        System.out.println("Cód\tCor\t\tPreço a pagar se devolvido agora");
+        for(Aluguel aluguel : listaAlugueis){
+            System.out.println(aluguel.getVeiculo().getCodigo() + "\t" +
+                    aluguel.getVeiculo().getCor() + "\t" + "R$" +
+                    aluguel.getPreco());
+        }
+
+        System.out.println("Digite qualquer tecla para voltar ao menu inicial");
+        Scanner scanner = new Scanner(System.in);
+        String next = scanner.next();
         initMenu();
     }
 
