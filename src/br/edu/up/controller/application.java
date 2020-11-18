@@ -1,35 +1,24 @@
 package br.edu.up.controller;
 
+import br.edu.up.dao.AluguelDAO;
 import br.edu.up.dao.UsuarioDAO;
+import br.edu.up.dao.VeiculoDAO;
+import br.edu.up.model.Aluguel;
 import br.edu.up.model.Usuario;
+import br.edu.up.model.Veiculo;
 
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.Date;
-import java.util.List;
-import java.util.Scanner;
 
 public class application {
 
     private static String DATE_PATTERN = "dd/MM/yyyy";
 
-    public static void main(String[] args) throws SQLException, ParseException {
-
-        initMenu();
-
-        /*
-        UsuarioDAO uDao = new UsuarioDAO();
-        Usuario usuario = new Usuario("DouglasTESTE", "GorgesTESTE", new Date());
-        uDao.apagar(4);
-
-        List<Usuario> listaUsuarios = uDao.listar();
-        for(Usuario itemUsuario : listaUsuarios){
-            System.out.printf(itemUsuario.toString());
-        } */
-
-    }
+    public static void main(String[] args) throws SQLException, ParseException {initMenu();}
 
     private static void initMenu() throws ParseException {
         System.out.println("     Bem vindo ao Bike Rent");
@@ -56,7 +45,7 @@ public class application {
         System.out.println("Selecione um submenu de Usuários:");
         System.out.println("|        1 - Cadastre-se        |");
         System.out.println("|        2 - Editar cadastro    |");
-        System.out.println("|        4 - Apagar cadastro    |");
+        System.out.println("|        3 - Apagar cadastro    |");
         System.out.println("________________________________");
         Scanner scanner = new Scanner(System.in);
         Integer nrMenu = scanner.nextInt();
@@ -66,8 +55,6 @@ public class application {
         } else if (nrMenu.equals(2)) {
             editarUsuario();
         } else if (nrMenu.equals(3)) {
-            listarUsuario();
-        } else if (nrMenu.equals(4)) {
             apagarUsuario();
         }
     }
@@ -97,7 +84,7 @@ public class application {
     }
 
     private static Usuario buscarUsuario() throws ParseException {
-        //listarUsuario();
+        listarUsuario(); //TODO Apagar antes de ir pra PRD
 
         System.out.println("Digite seus dados:");
         Scanner scanUsuario = new Scanner(System.in);
@@ -185,30 +172,61 @@ public class application {
         //listarUsuario();
     }
 
-    private static void abrirMenuVeiculos() throws ParseException {
-        System.out.println("________________________________");
-        System.out.println("Selecione um submenu de Veículos:");
-        System.out.println("|        1 - Cadastrar          |");
-        System.out.println("|        2 - Editar             |");
-        System.out.println("|        3 - Listar             |");
-        System.out.println("|        4 - Apagar             |");
-        System.out.println("________________________________");
+    private static void abrirMenuAlugueis() throws ParseException {
+        System.out.println("________________________________________________");
+        System.out.println("Selecione uma opção:");
+        System.out.println("|        1 - Iniciar aluguel                   |");
+        System.out.println("|        2 - Consultar aluguel em andamento    |");
+        System.out.println("|        3 - Finalizar aluguel                 |");
+        System.out.println("________________________________________________");
         Scanner scanner = new Scanner(System.in);
         Integer nrMenu = scanner.nextInt();
 
         if (nrMenu.equals(1)) {
-            //cadastrarUsuario();
+            iniciarAluguel();
         } else if (nrMenu.equals(2)) {
-            //editarUsuario();
+            //consultarAluguel();
         } else if (nrMenu.equals(3)) {
-            listarUsuario();
-        } else if (nrMenu.equals(4)) {
-            apagarUsuario();
+           //finalizarAluguel();
         }
     }
 
-    private static void abrirMenuAlugueis() {
+    private static void iniciarAluguel() throws ParseException {
+        Usuario usuario = buscarUsuario();
 
+        VeiculoDAO veiculoDAO = new VeiculoDAO();
+        List<Veiculo> listaVeiculos = veiculoDAO.buscarVeiculosDisponiveis();
+
+        System.out.println("________________________________");
+        System.out.println("Selecione um Veículo para alugar:");
+
+        System.out.println("Cód\tCor\t\tPreço por Hora");
+        Map<Integer, Veiculo> mapaVeiculos = new HashMap<Integer, Veiculo>();
+        for(Veiculo veiculo : listaVeiculos){
+            mapaVeiculos.put(veiculo.getCodigo(), veiculo);
+            System.out.println(veiculo.getCodigo() + "\t" +
+                    veiculo.getCor() + "\t\t" +
+                    veiculo.getPreco()
+            );
+        }
+
+        Scanner scanner = new Scanner(System.in);
+        Integer codVeiculo = scanner.nextInt();
+
+        Veiculo veiculo = mapaVeiculos.get(codVeiculo);
+        Date dtRetirada = new Date();
+
+        Aluguel aluguel = new Aluguel(usuario, veiculo, dtRetirada, veiculo.getPreco());
+
+        AluguelDAO aluguelDAO = new AluguelDAO();
+        aluguelDAO.salvar(aluguel);
+
+        veiculo.setIdLocado(true);
+        veiculoDAO.atualizar(veiculo);
+
+        System.out.println("Aluguel iniciado com sucesso! Boa viagem!");
+
+        initMenu();
     }
 
     private static void abrirMenuPagamentos() {

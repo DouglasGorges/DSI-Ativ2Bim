@@ -36,16 +36,23 @@ public class Aluguel {
     private Date dtDevolucao;
 
     @Column(name="preco")
-    private long preco;
+    private double preco;
 
     public Aluguel() {
     }
 
-    public Aluguel(Usuario usuario, Veiculo veiculo, Date dtRetirada, Date dtDevolucao, long preco) {
+    public Aluguel(Usuario usuario, Veiculo veiculo, Date dtRetirada, Date dtDevolucao, double preco) {
         this.usuario = usuario;
         this.veiculo = veiculo;
         this.dtRetirada = dtRetirada;
         this.dtDevolucao = dtDevolucao;
+        this.preco = preco;
+    }
+
+    public Aluguel(Usuario usuario, Veiculo veiculo, Date dtRetirada, double preco) {
+        this.usuario = usuario;
+        this.veiculo = veiculo;
+        this.dtRetirada = dtRetirada;
         this.preco = preco;
     }
 
@@ -85,11 +92,11 @@ public class Aluguel {
         this.dtDevolucao = dtDevolucao;
     }
 
-    public long getPreco() {
+    public double getPreco() {
         return preco;
     }
 
-    public void setPreco(long preco) {
+    public void setPreco(double preco) {
         this.preco = preco;
     }
 

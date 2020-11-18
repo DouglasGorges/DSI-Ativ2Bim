@@ -21,7 +21,7 @@ public class Veiculo {
     private int id;
 
     @Column(name="codigo")
-    private long codigo;
+    private Integer codigo;
 
     @Column(name="cor")
     private String cor;
@@ -29,24 +29,28 @@ public class Veiculo {
     @Column(name="preco")
     private double preco;
 
+    @Column(name = "idLocado")
+    private int idLocado;
+
     public Veiculo() {
     }
 
-    public Veiculo(long codigo, String cor, double preco) {
+    public Veiculo(Integer codigo, String cor, double preco, int idLocado) {
         this.codigo = codigo;
         this.cor = cor;
         this.preco = preco;
+        this.idLocado = idLocado;
     }
 
     public int getId() {
         return id;
     }
 
-    public long getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(long codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 
@@ -64,6 +68,18 @@ public class Veiculo {
 
     public void setPreco(double preco) {
         this.preco = preco;
+    }
+
+    public boolean getIdLocado() {
+        return (idLocado == 0 ? false : true);
+    }
+
+    public void setIdLocado(boolean idLocado) {
+        if (idLocado) {
+            this.idLocado = 1;
+        } else {
+            this.idLocado = 0;
+        }
     }
 
     @Override
